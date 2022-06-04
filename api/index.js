@@ -17,9 +17,9 @@
 //     =====`-.____`.___ \_____/___.-`___.-'=====
 //                       `=---='
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-const server = require('./src/app.js');
-const { conn } = require('./src/db.js');
-const { preLoad, bulkCreateUsers } = require('./src/controllers/index')
+const server = require("./src/app.js");
+const { conn } = require("./src/db.js");
+const { preLoad, bulkCreateUsers } = require("./src/controllers/index");
 
 // Syncing all the models at once.
 conn.sync({ force: false }).then(() => {
