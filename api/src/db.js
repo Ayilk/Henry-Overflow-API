@@ -106,8 +106,8 @@ Comment.belongsTo(User);
 Module.hasMany(Tag);
 Tag.belongsTo(Module);
 
-User.hasMany(Order);
-Order.belongsTo(User);
+// User.hasMany(Order);
+// Order.belongsTo(User);
 
 
 
