@@ -1,84 +1,109 @@
-const { User, Post, Comment } = require('../db');
+const { User, Post, Comment } = require("../db");
 // const jwt = require('jsonwebtoken');
 // const { isAdmin } = require('../middleware');
 // require('dotenv').config()
 
-const getUser = async(req, res, next) => {
-    const { idUser } = req.params;
-    const {fullname} = req.query;
-   
-    try {
-        if(idUser){
-            const userDetail = await User.findByPk(idUser, {include: [
-                {
-                    model: Post,
-                    attributes: {exclude: ["userId"]}
-                }, 
-                {
-                    model: Comment,
-                    attributes: {exclude: ["userId"]}
-                }, 
-                
-            ]});
-            return userDetail ? res.status(200).send(userDetail) : res.status(400).send("user not found")
-        } 
-        const response = await User.findAll()
+const getUser = async (req, res, next) => {
+  const { idUser } = req.params;
+  const { fullname } = req.query;
 
-        if(fullname){
-            let userName = response.filter(el => el.full_name.toLowerCase().includes(fullname.toLowerCase()));
-            return userName.length ? res.send(userName) : res.status(400).send("User not found")
-        }
-        res.json(response)
-    } catch (error) {
-        next(error)
+  try {
+    if (idUser) {
+      const userDetail = await User.findByPk(idUser, {
+        include: [
+          {
+            model: Post,
+            attributes: { exclude: ["userId"] },
+          },
+          {
+            model: Comment,
+            attributes: { exclude: ["userId"] },
+          },
+        ],
+      });
+      return userDetail
+        ? res.status(200).send(userDetail)
+        : res.status(400).send("user not found");
     }
+    const response = await User.findAll();
+
+    if (fullname) {
+      let userName = response.filter((el) =>
+        el.full_name.toLowerCase().includes(fullname.toLowerCase())
+      );
+      return userName.length
+        ? res.send(userName)
+        : res.status(400).send("User not found");
+    }
+    res.json(response);
+  } catch (error) {
+    next(error);
+  }
 };
 
+const logintUser = async (req, res, next) => {
+  const { nickname, picture, name, email } = req.body;
 
-const logintUser = async(req, res, next) => {
-    const { nickname, picture, name, email } = req.body;
-    // console.log(req.body)
-    // SI picture ES NULL HACER UN UPDATE CON LA NUEVA INFO
-    let arrayName = name.split(" ");
-    const firstName = arrayName.shift();
-    const lastName = arrayName.join(" ");
+  let arrayName = name.split(" ");
+  const firstName = arrayName.shift();
+  const lastName = arrayName.join(" ");
 
-    const userLogin = {
+  try {
+    const [user, boolean] = await User.findOrCreate({
+      where: { email: email },
+      defaults: {
         nick: nickname,
         image: picture,
         first_name: firstName,
         last_name: lastName,
-        email: email,
-        // isAdmin: true
-    };
+      },
+    });
 
-    try {
-        const [user, boolean] = await User.findOrCreate({
-            where: userLogin,
-        });
-        console.log(user)
-        // const token = jwt.sign(user.id, process.env.SECRET);
-        // console.log(token)
-
-        res.json({
-            user: user,
-            isCreated: boolean
-        });
-    } catch (error) {
-        console.log(error)
-        // next(error)
-    }
+    res.json({
+      user: user,
+      isCreated: boolean,
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const updateUser = (req, res, next) => {
-    const { idUser } = req.params;
-    const {first_name, last_name, email, about, rating, badges, isAdmin, role, twitter, github, portfolio} = req.body;
-    return User.update(
-        {first_name, last_name, email, about, rating, badges, isAdmin, role, twitter, github, portfolio},{
-            where: {id: idUser},  raw : true 
-        },
-    ).then(updatedUser => res.send(updatedUser))
-    .catch(error => next(error))
+  const { idUser } = req.params;
+  const {
+    first_name,
+    last_name,
+    email,
+    about,
+    rating,
+    badges,
+    isAdmin,
+    role,
+    twitter,
+    github,
+    portfolio,
+  } = req.body;
+  return User.update(
+    {
+      first_name,
+      last_name,
+      email,
+      about,
+      rating,
+      badges,
+      isAdmin,
+      role,
+      twitter,
+      github,
+      portfolio,
+    },
+    {
+      where: { id: idUser },
+      raw: true,
+    }
+  )
+    .then((updatedUser) => res.send(updatedUser))
+    .catch((error) => next(error));
 };
 
 // const deleteUser = (req, res, next) => {
@@ -92,8 +117,8 @@ const updateUser = (req, res, next) => {
 // }
 
 module.exports = {
-    getUser,
-    logintUser,
-    updateUser,
-    // deleteUser
-}
+  getUser,
+  logintUser,
+  updateUser,
+  // deleteUser
+};
