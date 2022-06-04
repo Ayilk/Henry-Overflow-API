@@ -26,10 +26,9 @@ __TAGS & MODULES__
   - GET http://localhost:3001/modules
   - GET http://localhost:3001/tags
 
-__LIKES POSTS__
-  - PUT http://localhost:3001/post_likes/{idPost}/{idUser}
-  - GET http://localhost:3001/post_likes/{idPost}
-
-__LIKES COMMENTS__
-  - PUT http://localhost:3001/comment_likes/{idComment}/{idUser}
-  - GET http://localhost:3001/comment_likes/{idComment}
+__LIKES POSTS // COMMENTS__
+  - PUT http://localhost:3001/likes/{idOf}/{idUser}
+  - GET http://localhost:3001/likes/{idOf}
+  <br/>
+  <br/>
+  NOTA: "idOf" representaria el ID de la entidad a la que le estaremos dando like, si se tratara de un post, el primer parametro sera el ID de dicho post, si se tratara de un comentario se insertaria el ID del comentario

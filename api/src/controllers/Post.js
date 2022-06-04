@@ -1,4 +1,4 @@
-const { Post, Tag, User, Comment, Module, Like_post } = require("../db");
+const { Post, Tag, User, Comment, Module, Like } = require("../db");
 
 const getPost = (req, res, next) => {
   const { idPost } = req.params;
@@ -8,17 +8,16 @@ const getPost = (req, res, next) => {
     include: [
       {
         model: Tag,
-        attributes: ["name", "id"],
+        attributes: { exclude: ["moduleId"] },
         through: {
           attributes: [],
         },
       },
       {
-        model: Like_post,
-        // attributes: ["name", "id"],
-        // through: {
-        //     attributes: []
-        // }
+        model: Like,
+        attributes: {
+          exclude: ["commentId"],
+        },
       },
       {
         model: Module,
@@ -26,13 +25,13 @@ const getPost = (req, res, next) => {
       {
         model: Comment,
         include: [
-          { model: User, attributes: ["first_name", "last_name", "id"] },
+          { model: User },
+          { model: Like, attributes: { exclude: ["postId"] } },
         ],
         attributes: { exclude: ["userId", "postId"] },
       },
       {
         model: User,
-        attributes: ["first_name", "last_name", "id"],
       },
     ],
     attributes: { exclude: ["userId", "moduleId"] },
@@ -41,8 +40,8 @@ const getPost = (req, res, next) => {
       if (idPost) {
         let postId = post.filter((el) => el.id == idPost);
         return postId.length
-          ? res.status(200).send(postId)
-          : res.status(400).send("question not found");
+          ? res.send(postId)
+          : res.status(404).send("question not found");
       }
       if (title) {
         let postTitle = post.filter((el) =>
@@ -50,7 +49,7 @@ const getPost = (req, res, next) => {
         );
         return postTitle.length
           ? res.send(postTitle)
-          : res.status(400).send("question not found");
+          : res.status(404).send("question not found");
       }
       return res.send(post);
     })
@@ -60,7 +59,6 @@ const getPost = (req, res, next) => {
 const addPost = async (req, res, next) => {
   try {
     const { idUser } = req.params;
-    // const idUser = req.idUser
     const createdBy = await User.findByPk(idUser);
 
     const { title, message, rating, tag, module } = req.body;
@@ -69,7 +67,6 @@ const addPost = async (req, res, next) => {
       message,
       rating,
     });
-
     const tags = await Tag.findAll({
       where: {
         name: tag,
@@ -80,7 +77,6 @@ const addPost = async (req, res, next) => {
         name: module,
       },
     });
-    // console.log(section[0].__proto__)
     postCreated.addTag(tags);
     section[0].addPost(postCreated);
     createdBy.addPost(postCreated);
@@ -100,7 +96,6 @@ const updatePost = async (req, res, next) => {
         name: tag,
       },
     });
-    // console.log("Post", postUpdate.__proto__)
     console.log(allTags);
     await postUpdate.setTags(allTags);
     const updateSuccess = await Post.update(

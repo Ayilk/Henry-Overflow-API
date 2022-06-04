@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
     // defino el modelo
-    sequelize.define('like_comment', {
+    sequelize.define('like', {
       id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -11,12 +11,16 @@ module.exports = (sequelize) => {
       },
       userId: {
         type: DataTypes.UUID,
-        unique: 'commentAndUser'
+        unique: 'like'
+      },
+      postId: {
+        type: DataTypes.UUID,
+        unique: 'like',
       },
       commentId: {
         type: DataTypes.UUID,
-        unique: 'commentAndUser'
-      },
+        unique: 'like',
+      }
     },
     {
       timestamps: false
