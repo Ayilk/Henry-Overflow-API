@@ -1,6 +1,6 @@
 const { User, Post, Comment } = require("../db");
-// const jwt = require('jsonwebtoken');
 // const { isAdmin } = require('../middleware');
+// const jwt = require('jsonwebtoken');
 // require('dotenv').config()
 
 const getUser = async (req, res, next) => {
@@ -56,6 +56,7 @@ const logintUser = async (req, res, next) => {
         image: picture,
         first_name: firstName,
         last_name: lastName,
+        isAdmin: false
       },
     });
 
@@ -64,7 +65,7 @@ const logintUser = async (req, res, next) => {
       isCreated: boolean,
     });
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 };
 

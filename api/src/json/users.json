@@ -1,8 +1,37 @@
 [
     {
-      "nick": "Allannara",
-      "name": "Allan Reynoso Naranjo",
       "email": "allannara@outlook.com",
+      "name": "Allan Reynoso",
+      "nickname": "AllanNara",
+      "picture": "https://avatars.githubusercontent.com/u/97809481?v=4",
+      "isAdmin": true
+    },
+    {
+      "email": "matiasromero20121991@gmail.com",
+      "name": "matias romero",
+      "nickname": "matias199130",
+      "picture": "https://avatars.githubusercontent.com/u/89623331?v=4",
+      "isAdmin": true
+    },
+    {
+      "email": "alfredoegrelias22@gmail.com",
+      "name": "Alfredo Egremy",
+      "nickname": "Egremy-quark",
+      "picture": "https://avatars.githubusercontent.com/u/65094180?v=4",
+      "isAdmin": true
+    },
+    {
+      "email": "lisandromansilla.dg@gmail.com",
+      "name": "Lisandro Mansilla",
+      "nickname": "lisandroman",
+      "picture": "https://avatars.githubusercontent.com/u/78130980?v=4",
+      "isAdmin": true
+    },
+    {
+      "email": "srangel.h92@gmail.com",
+      "name": "Ayilk",
+      "nickname": "Ayilk",
+      "picture": "https://avatars.githubusercontent.com/u/88750886?v=4",
       "isAdmin": true
     }
 ]

@@ -173,7 +173,7 @@ async function relationsModulesTags() {
 
 const bulkCreateUsers = async () => {
   try {
-    const data = fs.readFileSync(__dirname + "/../json/users.json", "utf8");
+    let data = fs.readFileSync(__dirname + "/../json/users.json", "utf8");
     data = JSON.parse(data);
 
     for (let i = 0; i < data.length; i++) {
@@ -182,17 +182,19 @@ const bulkCreateUsers = async () => {
       const firstName = arrayName.shift();
       const lastName = arrayName.join(" ");
 
-      const userCreated = await User.findOrCreate({
-        where: {
+      const [admins, boolean] = await User.findOrCreate({
+        where: { email: data[i].email },
+        defaults: {
           nick: data[i].nickname,
-          image: data[i].picture,
           first_name: firstName,
           last_name: lastName,
           email: data[i].email,
+          image: data[i].picture,
           isAdmin: true
         },
       });
-      // console.log(userCreated[0].toJSON())
+      console.log(admins.toJSON())
+      console.log(boolean)
     }
   } catch (error) {
     console.log(error);
