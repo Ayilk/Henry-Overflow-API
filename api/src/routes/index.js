@@ -6,6 +6,7 @@ const comments = require("./comments");
 const tags = require("./tags");
 const modules = require("./modules");
 const likes = require("./likes");
+const favorites = require("./favorites")
 
 const router = Router();
 
@@ -15,5 +16,6 @@ router.use("/tags", tags);
 router.use("/modules", modules);
 router.use("/comments", comments);
 router.use("/likes", likes);
+router.use("/favorites", favorites);
 
 module.exports = router;
