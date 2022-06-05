@@ -1,7 +1,6 @@
 const { User, Post, Comment } = require("../db");
-// const jwt = require('jsonwebtoken');
 // const { isAdmin } = require('../middleware');
-// require('dotenv').config()
+
 
 const getUser = async (req, res, next) => {
   const { idUser } = req.params;
@@ -68,30 +67,17 @@ const logintUser = async (req, res, next) => {
   }
 };
 
+
 const updateUser = (req, res, next) => {
   const { idUser } = req.params;
-  const {
-    first_name,
-    last_name,
-    email,
-    about,
-    rating,
-    badges,
-    isAdmin,
-    role,
-    twitter,
-    github,
-    portfolio,
-  } = req.body;
+  const { first_name, last_name, about, role, twitter, github, portfolio } =
+    req.body;
+
   return User.update(
     {
       first_name,
       last_name,
-      email,
       about,
-      rating,
-      badges,
-      isAdmin,
       role,
       twitter,
       github,
@@ -102,23 +88,12 @@ const updateUser = (req, res, next) => {
       raw: true,
     }
   )
-    .then((updatedUser) => res.send(updatedUser))
+    .then((updatedUser) => res.json({ Update: Boolean(parseInt(updatedUser)) }))
     .catch((error) => next(error));
 };
-
-// const deleteUser = (req, res, next) => {
-//     const id = req. params.id;
-//     return User.destroy({
-//         where: {
-//             id
-//         }
-//     }).then(() => {res.status(200).send("User deleted successfully")})
-//     .catch(error => next(error))
-// }
 
 module.exports = {
   getUser,
   logintUser,
   updateUser,
-  // deleteUser
 };
