@@ -1,7 +1,6 @@
 const { User, Post, Comment } = require("../db");
 // const { isAdmin } = require('../middleware');
 
-
 const getUser = async (req, res, next) => {
   const { idUser } = req.params;
   const { fullname } = req.query;
@@ -55,6 +54,7 @@ const logintUser = async (req, res, next) => {
         image: picture,
         first_name: firstName,
         last_name: lastName,
+        isAdmin: false
       },
     });
 
@@ -63,7 +63,7 @@ const logintUser = async (req, res, next) => {
       isCreated: boolean,
     });
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 };
 
