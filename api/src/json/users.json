@@ -33,5 +33,19 @@
       "nickname": "Ayilk",
       "picture": "https://avatars.githubusercontent.com/u/88750886?v=4",
       "isAdmin": true
+    },
+    {
+      "email": "icyreyeslod@gmail.com",
+      "name": "Rodrigo Reyes Hernandez",
+      "nickname": "reydez",
+      "picture": "https://avatars.githubusercontent.com/u/43526172?v=4",
+      "isAdmin": true
+    },
+    {
+      "email": "exequiel.ol29@gmail.com",
+      "name": "Damian",
+      "nickname": "Damixn31",
+      "picture": "https://avatars.githubusercontent.com/u/88641095?v=4",
+      "isAdmin": true
     }
 ]
