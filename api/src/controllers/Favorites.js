@@ -1,0 +1,62 @@
+const { Post, User, Comment, Favorite } = require("../db");
+
+const updateFavoriteOf = async (req, res, next) => {
+  const { idOf, idUser } = req.params;
+  try {
+    const favoritePost = await Post.findByPk(idOf);
+    const favoriteComment = favoritePost ? false : await Comment.findByPk(idOf);
+
+    let response = favoriteComment ? "comment" : "post";
+
+    const favByUser = await User.findByPk(idUser);
+
+    const exist = await Favorite.findAll(
+      favoriteComment
+        ? {
+            where: {
+              userId: idUser,
+              commentId: idOf,
+            },
+          }
+        : {
+            where: {
+              userId: idUser,
+              postId: idOf,
+            },
+          }
+    );
+
+    if (!exist.length) {
+      const newLike = await Favorite.create({
+        commentOrPost: response,
+      });
+      favoriteComment
+        ? favoriteComment.addFavorite(newLike)
+        : favoritePost.addFavorite(newLike);
+      favByUser.addFavorite(newLike);
+      return res.send(`Added ${response} to favorites`);
+    } else {
+      await exist[0].destroy();
+      return res.send(`Removed ${response} from favorites`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getFavoritesUser = async (req, res, next) => {
+  const { idUser } = req.params;
+  try {
+    const favsByUser = await User.findByPk(idUser);
+    const allFavs = await favsByUser.getFavorites();
+
+    res.json({ Favorites: allFavs });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  updateFavoriteOf,
+  getFavoritesUser,
+};
