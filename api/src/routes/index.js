@@ -9,6 +9,7 @@ const modules = require("./modules");
 const likes = require("./likes");
 const favorites = require("./favorites")
 const reports = require('./reports')
+const inboxes = require('./inboxes')
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use("/comments", comments);
 router.use("/likes", likes);
 router.use("/favorites", favorites);
 router.use("/reports", reports);
+router.use("/inboxes", inboxes);
 
 module.exports = router;

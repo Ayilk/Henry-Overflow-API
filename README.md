@@ -40,6 +40,13 @@ __REPORT__
 
   - POST http://localhost:3001/reports/{idOf}/{idUser}
 
+__INBOX__
+
+  - GET http://localhost:3001/inboxes/{idUser}
+  - PUT http://localhost:3001/inboxes/{idUser}/{idNotification}
+  - PUT http://localhost:3001/inboxes/{idUser}/{idNotification}?clean=true
+  - DELETE http://localhost:3001/inboxes/{idUser}/clean
+
 <br/>
 
 ## <b> ADMIN ROUTES </b>
