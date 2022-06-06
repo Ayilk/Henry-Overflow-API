@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { isAdmin } = require('../middleware');
 
 const admin = require('./admin/index')
 const posts = require("./posts");
@@ -13,7 +14,7 @@ const inboxes = require('./inboxes')
 
 const router = Router();
 
-router.use("/admin", admin)
+router.use("/admin", isAdmin, admin)
 router.use("/posts", posts);
 router.use("/users", users);
 router.use("/tags", tags);

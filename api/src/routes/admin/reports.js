@@ -1,11 +1,11 @@
 const { Router } = require('express');
-const { getReports, deleteReport } = require('../../controllers/Reports');
+const { adminGetReports, adminDeleteReport } = require('../../controllers/Reports');
 // const {  } = require('../middleware');
 
 const router = Router();
 
-router.get('/', getReports);
-router.get('/:idReport', getReports);
-router.delete('/:idReport', deleteReport)
+router.get('/', adminGetReports);
+router.get('/:idReport', adminGetReports);
+router.delete('/:idReport', adminDeleteReport)
 
 module.exports = router

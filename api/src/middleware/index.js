@@ -1,41 +1,33 @@
 // const jwt = require("jsonwebtoken");
 const { User } = require("../db");
-require("dotenv").config();
-
-// // MIDDELWARE -----> DEPRECADO, AUTENTICACION DESDE EL FRONT CON Auth0
-// function validateToken(req, res, next) {
-//   try {
-//     const accessToken = req.headers['authorization'];
-//     if(!accessToken) res.status(403).send('Access denied');
-  
-//     jwt.verify(accessToken, process.env.SECRET, (err, idUser) => {
-//         if(err) {
-//             return res.send('Access denied, token expired or incorrect');
-//         } else {
-//             const user = User.findByPk(idUser)
-//             if(!user) res.status(404).send('User not exist')
-//             req.idUser = idUser  
-//             next()
-//         }
-//     });
-//   } catch (error) {
-//     next(error)
-//   }
-// }
 
 const isAdmin = async (req, res, next) => {
+  const idUser = req.header("authorization");
   try {
-    let user = await User.findByPk(req.idUser);
+    let user = await User.findByPk(idUser);
     if (!user.isAdmin) {
       return res.status(401).send({ errorMsg: "Unauthorized content." });
     }
     next();
   } catch (error) {
-    res.status(500).send({ errorMsg: error.message });
+    next(error);
+  }
+};
+
+const isBanned = async (req, res, next) => {
+  const idUser = req.header("authorization");
+  try {
+    let user = await User.findByPk(idUser);
+    if (user.isBanned) {
+      return res.status(401).send({ errorMsg: "Unauthorized request." });
+    }
+    next();
+  } catch (error) {
+    next(error);
   }
 };
 
 module.exports = {
-  // validateToken,
-  isAdmin
+  isAdmin,
+  isBanned,
 };

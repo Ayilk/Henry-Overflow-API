@@ -1,38 +1,9 @@
 const { Post, User, Comment } = require("../db");
 const { addNotification } = require('./Inboxes');
 
-// const getComment = (req, res, next) => {
-//     const id = req.params.id;
-
-//          Comment.findAll({
-//             include: [
-//                 {
-//                 model: Post,
-//                 attributes: ["title", "id"],
-//                 // through: {
-//                 //     attributes: []
-//                 // }
-//                 },
-//                 {
-//                 model: User,
-//                 attributes: ["first_name", "last_name", "id"],
-//                 }
-//             ]
-//         }).then(comment => {
-//             if(id){
-//                 let commentId = comment.filter(el => el.id == id);
-//                 commentId.length ? res.status(200).send(commentId) : res.status(400).send("Comment not found")
-//             }
-
-//            return  res.send(comment)})
-//         .catch(error => next(error))
-
-// }
-
 
 const addComment = async(req, res, next) => {
     const { idPost, idUser } = req.params
-    // const idUser = req.idUser
     const obj = {};
 
   try {
@@ -97,5 +68,4 @@ module.exports = {
   updateComment,
   deleteComment,
   addComment,
-  // getComment,
 };
