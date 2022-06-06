@@ -1,15 +1,15 @@
-const { Post, User, Like, Comment } = require("../db");
+const { Post, User, Like, Comment, Inbox } = require("../db");
+const { addNotification } = require("./Inboxes");
 
 const updateLikeOf = async (req, res, next) => {
   const { idOf, idUser } = req.params;
-  // const idUser = req.idUser
+
   try {
-    const likeInPost = await Post.findByPk(idOf);
-    const likeInComment = likeInPost ? false : await Comment.findByPk(idOf);
-
-    let response = likeInComment ? "comment" : "post";
-
     const likedBy = await User.findByPk(idUser);
+    const likeInPost = await Post.findByPk(idOf, { include: [User] });
+    const likeInComment = likeInPost ? false : await Comment.findByPk(idOf, { include: [User] });
+    const owner = likeInComment ? likeInComment.dataValues.user.id : likeInPost.dataValues.user.id;
+    let response = likeInComment ? "comment" : "post";
 
     const exist = await Like.findAll(
       likeInComment
@@ -18,12 +18,14 @@ const updateLikeOf = async (req, res, next) => {
               userId: idUser,
               commentId: idOf,
             },
+            include: [Inbox],
           }
         : {
             where: {
               userId: idUser,
               postId: idOf,
             },
+            include: [Inbox],
           }
     );
 
@@ -33,11 +35,23 @@ const updateLikeOf = async (req, res, next) => {
         ? likeInComment.addLike(newLike)
         : likeInPost.addLike(newLike);
       likedBy.addLike(newLike);
-      return res.send(`Like ${response} successful`);
-      
+
+      let notification = false;
+      if (likedBy.dataValues.id !== owner) {
+        const created = await addNotification("like", newLike.dataValues.id, owner);
+        notification = created;
+      };
+      return res.send(`Like ${response} successful and notification ${notification}`);
     } else {
+      let notification = false;
+      const deleted = await Inbox.destroy({
+        where: {
+          id: exist[0].dataValues.inboxes[0].dataValues.id,
+        },
+      });
       await exist[0].destroy();
-      return res.send(`Dislike ${response} successful`);
+      notification = Boolean(deleted);
+      return res.send(`Dislike ${response} successful and destroyed notification ${notification}`);
     }
   } catch (error) {
     next(error);

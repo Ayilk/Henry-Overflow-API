@@ -1,4 +1,5 @@
 const { Post, User, Comment } = require("../db");
+const { addNotification } = require('./Inboxes');
 
 // const getComment = (req, res, next) => {
 //     const id = req.params.id;
@@ -41,7 +42,7 @@ const addComment = async(req, res, next) => {
     const newComment = await Comment.create(req.body);
     createdBy.addComment(newComment);
     createdInPost.addComment(newComment);
-
+    
     obj.id = newComment.dataValues.id;
     obj.message = req.body.message;
     obj.rating = newComment.dataValues.rating;
@@ -50,7 +51,13 @@ const addComment = async(req, res, next) => {
       id: createdBy.dataValues.id,
       last_name: createdBy.dataValues.last_name,
     };
-
+    obj.notification = false
+    
+    if(createdInPost.dataValues.user.id !== createdBy.dataValues.id) {
+      addNotification("comment", newComment.dataValues.id, createdInPost.dataValues.user.id);
+      obj.notification = true
+    }
+  
     res.send(obj);
   } catch (error) {
     next(error);
