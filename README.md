@@ -26,16 +26,31 @@ __TAGS & MODULES__
   - GET http://localhost:3001/modules
   - GET http://localhost:3001/tags
 
-__LIKES POSTS // COMMENTS__
-  - PUT http://localhost:3001/likes/{idOf}/{idUser}
+__LIKE__
+
   - GET http://localhost:3001/likes/{idOf}
+  - PUT http://localhost:3001/likes/{idOf}/{idUser}
 
-__FAVORITES POSTS // COMMENTS__
+__FAVORITE__
 
-  - PUT http://localhost:3001/favorites/{idOf}/{idUser}
   - GET http://localhost:3001/favorites/{idUser}
+  - PUT http://localhost:3001/favorites/{idOf}/{idUser}
 
+__REPORT__
+
+  - POST http://localhost:3001/reports/{idOf}/{idUser}
 
 <br/>
-NOTA: "idOf" representaria el ID de la entidad a la que le estaremos dando like, si se tratara de un post, <br/> el primer parametro sera el ID de dicho post, si se tratara de un comentario se insertaria el ID del comentario.
+
+## <b> ADMIN ROUTES </b>
+
+__REPORT__
+
+  - GET http://localhost:3001/admin/reports/
+  - GET http://localhost:3001/admin/reports/{idReport}
+  - DELETE http://localhost:3001/admin/reports/{idReport}
+
+<br/>
+
+> NOTA: "idOf" representaria el ID de la entidad a la que le estaremos dando like, si se tratara de un post, <br/> el primer parametro sera el ID de dicho post, si se tratara de un comentario se insertaria el ID del comentario.
 
