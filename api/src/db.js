@@ -62,14 +62,10 @@ const {
     User,
     Comment,
     Module,
-<<<<<<< HEAD
-    Like_comment,
-    Like_post,
+    Like,
     Order,
+    Plan,
     Product
-=======
-    Like
->>>>>>> origin
 } = sequelize.models;
 
 User.hasMany(Like)
@@ -99,8 +95,11 @@ Comment.belongsTo(User);
 Module.hasMany(Tag);
 Tag.belongsTo(Module);
 
-// User.hasMany(Order);
-// Order.belongsTo(User);
+User.hasMany(Order);
+Order.belongsTo(User);
+
+Plan.hasMany(Product);
+Product. belongsTo(Plan);
 
 
 

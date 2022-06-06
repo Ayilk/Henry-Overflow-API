@@ -7,6 +7,7 @@ const tags = require("./tags");
 const modules = require("./modules");
 const likes = require("./likes");
 const paymentRoutes = require("./payment.routes");
+const products = require("./product");
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use("/modules", modules);
 router.use("/comments", comments);
 router.use("/likes", likes);
 router.use("/payment", paymentRoutes);
+router.use("/product", products)
 
 module.exports = router;
