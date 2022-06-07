@@ -5,10 +5,10 @@ const { addPost, getPost, deletePost, updatePost } = require('../controllers/Pos
 const { isBanned } = require('../middleware'); 
 
 router.get('/', getPost);
-router.post('/:idUser', isBanned, addPost)
 router.get('/:idPost', getPost)
-router.put('/:idPost', updatePost)
-router.delete('/:idPost', deletePost)
+router.post('/:idUser', isBanned, addPost)
+router.put('/:idPost/:idUser', updatePost)
+router.delete('/:idPost/:idUser', deletePost)
 
 
 module.exports = router

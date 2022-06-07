@@ -5,10 +5,14 @@ const updateFavoriteOf = async (req, res, next) => {
   try {
     const favoritePost = await Post.findByPk(idOf);
     const favoriteComment = favoritePost ? false : await Comment.findByPk(idOf);
+    const favByUser = await User.findByPk(idUser);
+
+    if(!favByUser || (!favoritePost && !favoriteComment)) {
+      return res.status(404).send("Datos no encontrados")
+    }
 
     let response = favoriteComment ? "comment" : "post";
 
-    const favByUser = await User.findByPk(idUser);
 
     const exist = await Favorite.findAll(
       favoriteComment

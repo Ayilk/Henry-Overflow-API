@@ -6,9 +6,19 @@ const postReport = async (req, res, next) => {
   try {
     if (!reason) return res.status(400).send("faltan campos obligatorios");
 
-    const reportInPost = await Post.findByPk(idOf);
-    const reportInComment = reportInPost ? false : await Comment.findByPk(idOf);
+    const reportInPost = await Post.findByPk(idOf, { include: [User] });
+    const reportInComment = reportInPost ? false : await Comment.findByPk(idOf, { include: [User] });
     const reportBy = await User.findByPk(idUser);
+    
+    if(!reportBy || (!reportInComment && !reportInPost)) {
+      return res.status(404).send("Parametros invalidos")
+    };
+    
+    const owner = reportInComment ? reportInComment.dataValues.user.id : reportInPost.dataValues.user.id;
+
+    if(owner === reportBy.id) {
+      return res.status(400).send("No puedes reportar tu propio contenido")
+    };
 
     const exist = await Report.findAll(
       reportInComment
@@ -47,7 +57,17 @@ const adminGetReports = async (req, res, next) => {
   const { idReport } = req.params;
   try {
     const getReports = idReport
-      ? await Report.findByPk(idReport)
+      ? await Report.findByPk(idReport, {
+        include: [
+          {
+            model: User
+          },
+          {
+            model: Post,
+            include: [User]
+          }
+        ]
+      })
       : await Report.findAll();
 
     res.json(getReports);
