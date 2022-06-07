@@ -3,6 +3,6 @@ const { adminBanUser } = require('../../controllers/Users');
 
 const router = Router();
 
-router.put('/', adminBanUser)
+router.put('/ban/:idUser', adminBanUser)
 
 module.exports = router

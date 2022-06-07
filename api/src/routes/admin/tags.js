@@ -1,9 +1,9 @@
 const { Router } = require('express');
-const {  } = require('../../controllers/Tag');
+const { adminAddTags, adminDeleteTags } = require('../../controllers/Tag');
 
 const router = Router();
 
-router.post('/')
-router.delete('/')
+router.post('/:idModule', adminAddTags)
+router.delete('/:idTag', adminDeleteTags)
 
 module.exports = router

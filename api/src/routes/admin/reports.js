@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const { adminGetReports, adminDeleteReport } = require('../../controllers/Reports');
-// const {  } = require('../middleware');
 
 const router = Router();
 
