@@ -7,20 +7,23 @@ const updateLikeOf = async (req, res, next) => {
   try {
     const likedBy = await User.findByPk(idUser);
     const likeInPost = await Post.findByPk(idOf, { include: [User] });
-    const likeInComment = likeInPost ? false : await Comment.findByPk(idOf, { include: [User] });
-    
-    if(!likedBy || (!likeInComment && !likeInPost)) {
-      return res.status(404).send("Datos no encontrados")
+    const likeInComment = likeInPost
+      ? false
+      : await Comment.findByPk(idOf, { include: [User] });
+
+    if (!likedBy || (!likeInComment && !likeInPost)) {
+      return res.status(404).send("Datos no encontrados");
     }
-    
+
     let response = likeInComment ? "comment" : "post";
-    const owner = likeInComment ? likeInComment.dataValues.user.id : likeInPost.dataValues.user.id;
+    const owner = likeInComment
+      ? likeInComment.dataValues.user.id
+      : likeInPost.dataValues.user.id;
 
     const exist = await Like.findAll(
       likeInComment
         ? {
             where: {
-
               userId: idUser,
               commentId: idOf,
             },
@@ -44,10 +47,16 @@ const updateLikeOf = async (req, res, next) => {
 
       let notification = false;
       if (likedBy.dataValues.id !== owner) {
-        const created = await addNotification("like", newLike.dataValues.id, owner);
+        const created = await addNotification(
+          "like",
+          newLike.dataValues.id,
+          owner
+        );
         notification = created;
-      };
-      return res.send(`Like ${response} successful and notification ${notification}`);
+      }
+      return res.send(
+        `Like ${response} successful and notification ${notification}`
+      );
     } else {
       let notification = false;
       const deleted = await Inbox.destroy({
@@ -57,7 +66,9 @@ const updateLikeOf = async (req, res, next) => {
       });
       await exist[0].destroy();
       notification = Boolean(deleted);
-      return res.send(`Dislike ${response} successful and destroyed notification ${notification}`);
+      return res.send(
+        `Dislike ${response} successful and destroyed notification ${notification}`
+      );
     }
   } catch (error) {
     next(error);
@@ -70,7 +81,11 @@ const getLikeOf = async (req, res, next) => {
     const likeInPost = await Post.findByPk(idOf);
     const likeInComment = likeInPost ? false : await Comment.findByPk(idOf);
 
-    let response = likeInComment ? "comment likes" : "post likes";
+    if(!likeInComment && !likeInPost) return res.status(404).send("IDs no encontrados en base de datos")
+
+    let response = likeInComment
+      ? "comment likes"
+      : "post likes";
     const countLikes = likeInComment
       ? await likeInComment.countLikes()
       : await likeInPost.countLikes();
