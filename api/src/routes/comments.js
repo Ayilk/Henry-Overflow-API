@@ -5,9 +5,7 @@ const { isBanned } = require('../middleware');
 const router = Router();
 
 router.post('/:idPost/:idUser', isBanned, addComment);
-router.put('/:idComment', updateComment);
-router.delete('/:idComment', deleteComment);
-// router.get('/', getComment)
-// router.get('/:id', getComment)
+router.put('/:idComment/:idUser', updateComment);
+router.delete('/:idComment/:idUser', deleteComment);
 
 module.exports = router

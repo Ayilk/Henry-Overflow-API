@@ -11,12 +11,7 @@ module.exports = (sequelize) => {
         },
         message: {
             type: DataTypes.TEXT,
-            unique: true,
             allowNull: false
-        },
-        rating: {
-            type: DataTypes.FLOAT,
-            defaultValue: 0
         }
     },
     {

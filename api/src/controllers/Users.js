@@ -92,8 +92,32 @@ const updateUser = (req, res, next) => {
     .catch((error) => next(error));
 };
 
+const adminBanUser = async(req, res, next) => {
+  const { idUser } = req.params
+  try {
+    const user = await User.findByPk(idUser);
+    if(user.isAdmin) return res.status(403).send("No es posible banear al usuario Admin")
+    const options = user.isBanned ? false : true
+
+    await User.update({
+      isBanned: options
+    },
+    {
+      where: { id: idUser },
+      raw: true
+    });
+
+    const response = options ? "Banned user" : "Unbanned user"
+    console.log(user.isBanned)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+};
+
 module.exports = {
   getUser,
   logintUser,
   updateUser,
+  adminBanUser
 };

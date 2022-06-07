@@ -8,13 +8,19 @@ const updateLikeOf = async (req, res, next) => {
     const likedBy = await User.findByPk(idUser);
     const likeInPost = await Post.findByPk(idOf, { include: [User] });
     const likeInComment = likeInPost ? false : await Comment.findByPk(idOf, { include: [User] });
-    const owner = likeInComment ? likeInComment.dataValues.user.id : likeInPost.dataValues.user.id;
+    
+    if(!likedBy || (!likeInComment && !likeInPost)) {
+      return res.status(404).send("Datos no encontrados")
+    }
+    
     let response = likeInComment ? "comment" : "post";
+    const owner = likeInComment ? likeInComment.dataValues.user.id : likeInPost.dataValues.user.id;
 
     const exist = await Like.findAll(
       likeInComment
         ? {
             where: {
+
               userId: idUser,
               commentId: idOf,
             },

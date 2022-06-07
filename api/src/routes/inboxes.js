@@ -6,6 +6,6 @@ const { userInbox, viewNotification, cleanInbox } = require('../controllers/Inbo
 
 router.get('/:idUser', userInbox)
 router.put('/:idUser/:idNotification', viewNotification)
-router.delete('/:idUser/clean', cleanInbox)
+router.delete('/clean/:idUser', cleanInbox)
 
 module.exports = router
