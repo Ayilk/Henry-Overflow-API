@@ -8,6 +8,6 @@ const router = Router();
 router.get('/',getUser);
 router.get('/:idUser', getUser)
 router.post('/', logintUser );
-router.put('/', updateUser);
+router.put('/:idUser', updateUser);
 
 module.exports = router

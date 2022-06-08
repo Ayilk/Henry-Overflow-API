@@ -11,15 +11,13 @@ module.exports = (sequelize) => {
       },
       title:{
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        unique: "uniquePost"
       },
       message: {
         type: DataTypes.TEXT,
-        allowNull: false
-      },
-      rating: {
-        type: DataTypes.INTEGER,
-        defaultValue: 0
+        allowNull: false,
+        unique: "uniquePost"
       }
     },
     {
