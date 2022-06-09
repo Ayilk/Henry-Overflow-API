@@ -3,10 +3,9 @@ const { DataTypes } = require("sequelize");
 module.exports = (sequelize) => {
   sequelize.define("order", {
     id: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       primaryKey: true,
-      allowNull: false,
-      autoIncrement: true,
+      allowNull: false,      
     },
     amount: {
       type: DataTypes.FLOAT,

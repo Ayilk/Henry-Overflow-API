@@ -1,4 +1,4 @@
-const {Order} = require('../db');
+const {Order, User} = require('../db');
 
 const postOrder = async(req, res, next) => {
     const { idUser } = req.params;
@@ -19,21 +19,21 @@ const postOrder = async(req, res, next) => {
 
 const getOrder = async(req, res, next) => {
     const idOrder = req.params.id;
-    try {
-        const orders = await Order.findAll({
-            include:[{
-                model: User
-            }]
-        }) 
+
+    Order.findAll({
+        include:[{
+            model: User
+        }]
+    }).then(orders => {
         if (idOrder) {
             let orderId = orders.filter((el) => el.id == idOrder);
             return orderId.length
               ? res.send(orderId)
               : res.status(404).send("Order not found");
-          }       
-    } catch (error) {
-        next(error)
-    }
+          }else{
+              return res.send(orders)
+          }  
+    }).catch(error => next(error))   
 }
 
 module.exports = {
