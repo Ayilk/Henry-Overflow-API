@@ -39,8 +39,9 @@ const getPost = (req, res, next) => {
     .then((post) => {
       if (idPost) {
         let postId = post.filter((el) => el.id == idPost);
+
         return postId.length
-          ? res.send(postId)
+          ? res.send(postId[0])
           : res.status(404).send("question not found");
       }
       if (title) {
@@ -61,19 +62,22 @@ const addPost = async (req, res, next) => {
   const { title, message, tag, module } = req.body;
   try {
     const createdBy = await User.findByPk(idUser);
-    
+
     const exist = await Post.findAll({
       where: {
         title,
-        message
-      }
+        message,
+      },
     });
 
-    if(exist.length) return res.status(400).send("Rechazado, ya existe un posteo con el mismo titulo y mensaje")
+    if (exist.length)
+      return res
+        .status(400)
+        .send("Rechazado, ya existe un posteo con el mismo titulo y mensaje");
 
     const postCreated = await Post.create({
       title,
-      message
+      message,
     });
     const tags = await Tag.findAll({
       where: {
@@ -99,23 +103,33 @@ const updatePost = async (req, res, next) => {
   const { title, message, tag } = req.body;
   try {
     const postUpdate = await Post.findByPk(idPost, { include: [User, Module] });
-    const ownUser = await User.findByPk(idUser)
+    const ownUser = await User.findByPk(idUser);
 
-    if(!postUpdate || !ownUser) return res.status(404).send("Datos no encontrados")
+    if (!postUpdate || !ownUser)
+      return res.status(404).send("Datos no encontrados");
 
-    if(ownUser.id !== postUpdate.dataValues.user.id) {
-      return res.status(400).send("Accion denegada, solo el propietario puede actualizar el post")
+    if (ownUser.id !== postUpdate.dataValues.user.id) {
+      return res
+        .status(400)
+        .send("Accion denegada, solo el propietario puede actualizar el post");
     }
 
-    if(tag) {
+    if (tag) {
       const allTags = await Tag.findAll({
         where: {
           name: tag,
         },
-        include: [Module]
+        include: [Module],
       });
-      let pass = allTags.find(e => e.dataValues.module.name !== postUpdate.dataValues.module.name)
-      if(Boolean(pass)) return res.status(400).send(`Tags deben pertenecer a Modulo ${postUpdate.dataValues.module.name}`)
+      let pass = allTags.find(
+        (e) => e.dataValues.module.name !== postUpdate.dataValues.module.name
+      );
+      if (Boolean(pass))
+        return res
+          .status(400)
+          .send(
+            `Tags deben pertenecer a Modulo ${postUpdate.dataValues.module.name}`
+          );
       await postUpdate.setTags(allTags);
     }
 
@@ -134,25 +148,28 @@ const updatePost = async (req, res, next) => {
   }
 };
 
-const deletePost = async(req, res, next) => {
+const deletePost = async (req, res, next) => {
   const { idPost, idUser } = req.params;
   try {
     const post = await Post.findByPk(idPost, { include: [User] });
-    const user = await User.findByPk(idUser)
+    const user = await User.findByPk(idUser);
 
-    if(!post || !user) return res.status(404).send("Datos no encontrados")
+    if (!post || !user) return res.status(404).send("Datos no encontrados");
 
-    if(post.dataValues.user.id === user.id || user.isAdmin) {
+    if (post.dataValues.user.id === user.id || user.isAdmin) {
       await Post.destroy({
         where: {
-          id: idPost
-        }
+          id: idPost,
+        },
       });
-    } else return res.status(400).send("Accion denegada, solo el propietario puede eliminar el posteo")
-    
-    res.send("Post deleted successfully")
+    } else
+      return res
+        .status(400)
+        .send("Accion denegada, solo el propietario puede eliminar el posteo");
+
+    res.send("Post deleted successfully");
   } catch (error) {
-    next(error)
+    next(error);
   }
 };
 
