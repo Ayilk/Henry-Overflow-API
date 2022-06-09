@@ -63,9 +63,7 @@ const {
     Comment,
     Module,
     Like,
-    Order,
-    Plan,
-    Product,
+    Order,    
     Favorite,
     Report,
     Inbox
@@ -128,8 +126,7 @@ Tag.belongsTo(Module);
 User.hasMany(Order);
 Order.belongsTo(User);
 
-Plan.hasMany(Product);
-Product. belongsTo(Plan);
+
 
 
 

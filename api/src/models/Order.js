@@ -1,19 +1,35 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
 module.exports = (sequelize) => {
-    // defino el modelo
-    sequelize.define('order', {
-        id: {
-            type: DataTypes.UUID,
-            defaultValue: DataTypes.UUIDV4,
-            primaryKey: true,
-            allowNull: false,
-        },
-        amount: {
-            type: DataTypes.FLOAT,            
-        },        
+  sequelize.define("order", {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+      autoIncrement: true,
     },
-    {
-      timestamps: false
-    });
-  };
+    amount: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    orderIdPayment: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    email_address: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      isEmail: true,
+    },        
+    paymentSource: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },    
+    status: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "PENDING",
+    },
+  });
+};

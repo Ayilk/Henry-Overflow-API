@@ -215,6 +215,36 @@ const listProducts = async(req, res, next) => {
    }
    
 }
+
+const listPlans = async(req, res, next) => {
+  try {
+    
+   const params = new URLSearchParams()
+   params.append("grant_type", "client_credentials")
+
+   const {data: {access_token}} = await axios.post(`${PAYPAL_API}/v1/oauth2/token`, params, {
+       headers: {
+         'Content-Type': 'application/x-www-form-urlencoded'
+       },
+       auth:{//Para enviar una autenticacion basica
+            username: CLIENT,
+             password: SECRET
+         }
+   })
+   console.log(access_token);
+    const response =await axios.get(`${PAYPAL_API}/v1/billing/plans?product_id=PROD-1JR71498VV238292S&page_size=2&page=1&total_required=true`,  {         
+        headers:{
+           'Content-Type': "application/json",
+           'Authorization': `Bearer ${access_token}`,
+        }
+    })
+    console.log(response.data)
+     res.send(response.data)
+   } catch (error) {
+       next(error)
+   }
+   
+}
  
 
 module.exports = {
@@ -223,5 +253,6 @@ module.exports = {
     cancelOrder,
     createProduct,
     createPlan,
-    listProducts
+    listProducts,
+    listPlans
 }

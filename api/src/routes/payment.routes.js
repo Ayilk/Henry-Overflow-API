@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Router } = require('express');
-const { payment, createOrder, captureOrder, cancelOrder, createProduct, createPlan, listProducts } = require('../controllers/payment');
+const { payment, createOrder, captureOrder, cancelOrder, createProduct, createPlan, listProducts, listPlans } = require('../controllers/payment');
 const router = Router();
 
 
@@ -10,5 +10,6 @@ router.get('/cancel-order', cancelOrder);
 router.post('/create-product', createProduct)
 router.post('/create-plan', createPlan);
 router.get('/list-products', listProducts)
+router.get('/list-plans', listPlans)
 
 module.exports = router
