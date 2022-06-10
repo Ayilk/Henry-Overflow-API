@@ -2,19 +2,22 @@ const { DataTypes } = require('sequelize');
 
 module.exports = (sequelize) => {
     // defino el modelo
-    sequelize.define('comment', {
+    sequelize.define('report', {
         id: {
             type: DataTypes.UUID,
             defaultValue: DataTypes.UUIDV4,
             primaryKey: true,
             allowNull: false,
         },
+        reason: {
+            type: DataTypes.ENUM("spam", "inadecuado"),
+            allowNull: false,
+        },
         message: {
             type: DataTypes.TEXT,
-            allowNull: false
         }
     },
     {
-      timestamps: true
+      timestamps: false
     });
   };

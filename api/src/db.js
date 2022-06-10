@@ -62,7 +62,11 @@ const {
     User,
     Comment,
     Module,
-    Like
+    Like,
+    Order,    
+    Favorite,
+    Report,
+    Inbox
 } = sequelize.models;
 
 User.hasMany(Like)
@@ -73,6 +77,33 @@ Like.belongsTo(Post)
 
 Comment.hasMany(Like)
 Like.belongsTo(Comment)
+
+User.hasMany(Favorite)
+Favorite.belongsTo(User)
+
+Post.hasMany(Favorite)
+Favorite.belongsTo(Post)
+
+Comment.hasMany(Favorite)
+Favorite.belongsTo(Comment)
+
+User.hasMany(Report)
+Report.belongsTo(User)
+
+Post.hasMany(Report)
+Report.belongsTo(Post)
+
+Comment.hasMany(Report)
+Report.belongsTo(Comment)
+
+User.hasMany(Inbox)
+Inbox.belongsTo(User)
+
+Like.hasMany(Inbox)
+Inbox.belongsTo(Like)
+
+Comment.hasMany(Inbox)
+Inbox.belongsTo(Comment)
 
 Post.belongsToMany(Tag, { through: "Posts_Tags" });
 Tag.belongsToMany(Post, { through: "Posts_Tags" });
@@ -91,6 +122,11 @@ Comment.belongsTo(User);
 
 Module.hasMany(Tag);
 Tag.belongsTo(Module);
+
+User.hasMany(Order);
+Order.belongsTo(User);
+
+
 
 
 

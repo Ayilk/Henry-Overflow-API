@@ -37,17 +37,17 @@ module.exports = (sequelize) => {
     about: {
       type: DataTypes.STRING,
     },
-    rating: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 0,
-    },
     badges: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
     isAdmin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    isBanned: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
@@ -69,6 +69,10 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     github: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    linkedin: {
       type: DataTypes.TEXT,
       allowNull: true,
     },

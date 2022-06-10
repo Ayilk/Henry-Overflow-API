@@ -1,6 +1,5 @@
-const { User, Post, Comment } = require("../db");
+const { User, Post, Comment, Like } = require("../db");
 // const { isAdmin } = require('../middleware');
-
 
 const getUser = async (req, res, next) => {
   const { idUser } = req.params;
@@ -18,6 +17,10 @@ const getUser = async (req, res, next) => {
             model: Comment,
             attributes: { exclude: ["userId"] },
           },
+          {
+            model: Like,
+            attributes: { exclude: ["userId"] },
+          }
         ],
       });
       return userDetail
@@ -55,6 +58,7 @@ const logintUser = async (req, res, next) => {
         image: picture,
         first_name: firstName,
         last_name: lastName,
+        isAdmin: false
       },
     });
 
@@ -63,7 +67,7 @@ const logintUser = async (req, res, next) => {
       isCreated: boolean,
     });
   } catch (error) {
-    console.log(error);
+    next(error)
   }
 };
 
@@ -92,8 +96,32 @@ const updateUser = (req, res, next) => {
     .catch((error) => next(error));
 };
 
+const adminBanUser = async(req, res, next) => {
+  const { idUser } = req.params
+  try {
+    const user = await User.findByPk(idUser);
+    if(user.isAdmin) return res.status(403).send("No es posible banear al usuario Admin")
+    const options = user.isBanned ? false : true
+
+    await User.update({
+      isBanned: options
+    },
+    {
+      where: { id: idUser },
+      raw: true
+    });
+
+    const response = options ? "Banned user" : "Unbanned user"
+    console.log(user.isBanned)
+    res.send(response)
+  } catch (error) {
+    next(error)
+  }
+};
+
 module.exports = {
   getUser,
   logintUser,
   updateUser,
+  adminBanUser
 };

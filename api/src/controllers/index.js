@@ -27,7 +27,7 @@ async function preLoad() {
       "Big O Notation",
       "Sort",
       "Document",
-      "Event Listeners", 
+      "Event Listeners",
       "Preprocesadores CSS",
       "ECMAScript6",
       "Bundlers",
@@ -61,13 +61,15 @@ async function preLoad() {
       "ORM",
       "Modelos",
       "CRUD",
-      "Autenticacion"      
+      "Autenticacion",
     ];
     const promisesTags = allTags.map((elem) => Tag.create({ name: elem }));
     await Promise.all(promisesTags);
 
     const allModules = ["M1", "M2", "M3", "M4"];
-    const promisesModules = allModules.map((elem) => Module.create({ name: elem }));
+    const promisesModules = allModules.map((elem) =>
+      Module.create({ name: elem })
+    );
     await Promise.all(promisesModules);
 
     relationsModulesTags();
@@ -84,87 +86,87 @@ async function relationsModulesTags() {
 
   const tagsM1 = await Tag.findAll({
     where: {
-        [Op.or]: [
-            { name: "JavaScript" },
-            { name: "Estructura de Datos" },
-            { name: "Algoritmo" },
-            { name: "Closures" },
-            { name: "Contexto de Ejecucion" },
-            { name: "Recursividad" },
-            { name: "Linked List" },
-            { name: "Arboles" },
-            { name: "Big O Notation" },
-            { name: "Sort" },
-        ], 
+      [Op.or]: [
+        { name: "JavaScript" },
+        { name: "Estructura de Datos" },
+        { name: "Algoritmo" },
+        { name: "Closures" },
+        { name: "Contexto de Ejecucion" },
+        { name: "Recursividad" },
+        { name: "Linked List" },
+        { name: "Arboles" },
+        { name: "Big O Notation" },
+        { name: "Sort" },
+      ],
     },
   });
   const tagsM2 = await Tag.findAll({
     where: {
-        [Op.or]: [
-            { name: "AJAX" },
-            { name: "Webpack" },
-            { name: "CSS" },
-            { name: "DOM" },
-            { name: "React" },
-            { name: "Redux" },
-            { name: "Document" },
-            { name: "Event Listeners" },
-            { name: "Preprocesadores CSS" },
-            { name: "ECMAScript6" },
-            { name: "Bundlers" },
-            { name: "HTML" },
-            { name: "Componentes" },
-            { name: "Estados" },
-            { name: "Life Cycles" },
-            { name: "Estilos React" },
-            { name: "Routing-React" },
-            { name: "Forms" },
-            { name: "Hooks" },
-            { name: "Reducer" },
-            { name: "Actions Creators" },
-            { name: "Store" }
-        ],
+      [Op.or]: [
+        { name: "AJAX" },
+        { name: "Webpack" },
+        { name: "CSS" },
+        { name: "DOM" },
+        { name: "React" },
+        { name: "Redux" },
+        { name: "Document" },
+        { name: "Event Listeners" },
+        { name: "Preprocesadores CSS" },
+        { name: "ECMAScript6" },
+        { name: "Bundlers" },
+        { name: "HTML" },
+        { name: "Componentes" },
+        { name: "Estados" },
+        { name: "Life Cycles" },
+        { name: "Estilos React" },
+        { name: "Routing-React" },
+        { name: "Forms" },
+        { name: "Hooks" },
+        { name: "Reducer" },
+        { name: "Actions Creators" },
+        { name: "Store" },
+      ],
     },
   });
   const tagsM3 = await Tag.findAll({
     where: {
-        [Op.or]: [
-            { name: "NodeJS" }, 
-            { name: "Express" }, 
-            { name: "Testing" },
-            { name: "V8" },
-            { name: "CommonJS" },
-            { name: "npm" },
-            { name: "Promesas" },
-            { name: "Web Server" },
-            { name: "JSON" },
-            { name: "API" },
-            { name: "Routes-Express" },
-            { name: "Middleware" },
-            { name: "HTTP" },
-            { name: "Postman" },
-            { name: "CORS" },
-            { name: "Generator Functions" },
-            { name: "Async/Await" }
-        ],
+      [Op.or]: [
+        { name: "NodeJS" },
+        { name: "Express" },
+        { name: "Testing" },
+        { name: "V8" },
+        { name: "CommonJS" },
+        { name: "npm" },
+        { name: "Promesas" },
+        { name: "Web Server" },
+        { name: "JSON" },
+        { name: "API" },
+        { name: "Routes-Express" },
+        { name: "Middleware" },
+        { name: "HTTP" },
+        { name: "Postman" },
+        { name: "CORS" },
+        { name: "Generator Functions" },
+        { name: "Async/Await" },
+      ],
     },
   });
   const tagsM4 = await Tag.findAll({
     where: {
-        [Op.or]: [
-            { name: "SQL" }, 
-            { name: "Sequelize" }, 
-            { name: "PostgreSQL" },
-            { name: "DBMS" },
-            { name: "Base de Datos" },
-            { name: "Modelos" },
-            { name: "CRUD" },
-            { name: "Autenticacion" },
-            { name: "ORM" }
-        ],
+      [Op.or]: [
+        { name: "SQL" },
+        { name: "Sequelize" },
+        { name: "PostgreSQL" },
+        { name: "DBMS" },
+        { name: "Base de Datos" },
+        { name: "Modelos" },
+        { name: "CRUD" },
+        { name: "Autenticacion" },
+        { name: "ORM" },
+      ],
     },
   });
-    
+
   moduleOne[0].addTag(tagsM1);
   moduleTwo[0].addTag(tagsM2);
   moduleThree[0].addTag(tagsM3);
@@ -173,33 +175,34 @@ async function relationsModulesTags() {
 
 const bulkCreateUsers = async () => {
   try {
-    const data = fs.readFileSync(__dirname + "/../json/users.json", "utf8");
+    let data = fs.readFileSync(__dirname + "/../json/users.json", "utf8");
     data = JSON.parse(data);
 
     for (let i = 0; i < data.length; i++) {
-
       let arrayName = data[i].name.split(" ");
       const firstName = arrayName.shift();
       const lastName = arrayName.join(" ");
 
-      const userCreated = await User.findOrCreate({
-        where: {
+      const [admins, boolean] = await User.findOrCreate({
+        where: { email: data[i].email },
+        defaults: {
           nick: data[i].nickname,
-          image: data[i].picture,
           first_name: firstName,
           last_name: lastName,
           email: data[i].email,
-          isAdmin: true
+          image: data[i].picture,
+          isAdmin: data[i].isAdmin,
+          isBanned: data[i].isBanned
         },
       });
-      // console.log(userCreated[0].toJSON())
+      // console.log(admins)
     }
   } catch (error) {
-    console.log(error);
+    console.log({ errorMsg: error.message });
   }
 };
 
 module.exports = {
   preLoad,
-  bulkCreateUsers
+  bulkCreateUsers,
 };
