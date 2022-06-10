@@ -195,7 +195,7 @@ const bulkCreateUsers = async () => {
           isBanned: data[i].isBanned
         },
       });
-      console.log(admins)
+      // console.log(admins)
     }
   } catch (error) {
     console.log({ errorMsg: error.message });

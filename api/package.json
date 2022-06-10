@@ -19,7 +19,6 @@
     "pg": "^8.7.3",
     "sequelize": "^6.20.0",
     "axios": "^0.27.2",
-    "cors": "^2.8.5",
     "request": "^2.88.2"
   },
   "devDependencies": {
