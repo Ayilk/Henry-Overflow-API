@@ -8,6 +8,8 @@ const comments = require("./comments");
 const tags = require("./tags");
 const modules = require("./modules");
 const likes = require("./likes");
+const paymentRoutes = require("./payment.routes");
+const orders = require("./orders");
 const favorites = require("./favorites")
 const reports = require('./reports')
 const inboxes = require('./inboxes')
@@ -21,6 +23,8 @@ router.use("/tags", tags);
 router.use("/modules", modules);
 router.use("/comments", comments);
 router.use("/likes", likes);
+router.use("/payment", paymentRoutes);
+router.use("/orders", orders);
 router.use("/favorites", favorites);
 router.use("/reports", reports);
 router.use("/inboxes", inboxes);
