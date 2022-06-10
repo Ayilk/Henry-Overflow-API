@@ -60,7 +60,7 @@ __REPORT__
   
 __TAGS__
 
-  - PUT http://localhost:3001/admin/tags/{idModule}
+  - POST http://localhost:3001/admin/tags/{idModule}
   - DELETE http://localhost:3001/admin/tags/{idTag}
   
 __USERS__

@@ -50,7 +50,7 @@ module.exports = (sequelize) => {
     isBanned: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false,      
+      defaultValue: false,
     },
     role: {
       type: DataTypes.ENUM(
@@ -69,6 +69,10 @@ module.exports = (sequelize) => {
       allowNull: true,
     },
     github: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    linkedin: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
