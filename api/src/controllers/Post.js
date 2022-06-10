@@ -148,6 +148,7 @@ const updatePost = async (req, res, next) => {
   }
 };
 
+
 const deletePost = async (req, res, next) => {
   const { idPost, idUser } = req.params;
   try {
@@ -173,9 +174,43 @@ const deletePost = async (req, res, next) => {
   }
 };
 
+
+const finishedPost = async (req, res, next) => {
+
+
+  try {
+
+    const { idPost } = req.params;
+    const { finished } = req.body;
+
+    const post = await Post.findByPk(idPost, { include: [User] });
+    console.log('hola', finished)
+
+    if (!post)
+      return res.status(404).send("Datos no encontrados");
+
+    const postFinished = await Post.update(
+      { finished },
+      {
+        where: { id: idPost },
+        // raw: true,
+      }
+    );
+
+    console.log('Este es el post finalizado:', postFinished);
+
+    return postFinished[0] === 1
+      ? res.send("Post actualizado con exito!")
+      : res.status(400).send("No se pudo actualizar el Post");
+  } catch (error) {
+    console.log(error)
+  }
+};
+
 module.exports = {
   getPost,
   addPost,
   updatePost,
   deletePost,
+  finishedPost
 };
