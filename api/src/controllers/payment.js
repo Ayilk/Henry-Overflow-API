@@ -114,7 +114,7 @@ const createPlan = async(req, res, next) => {
     try {
         const plan = {
             "product_id": "PROD-1JR71498VV238292S",
-            "name": "Basic Plan",
+            "name": "Plan trimestral",
             "description": "Basic plan",
             "billing_cycles": [
             //   {
@@ -129,11 +129,11 @@ const createPlan = async(req, res, next) => {
               {
                 "frequency": {
                   "interval_unit": "MONTH",
-                  "interval_count": 1
+                  "interval_count": 3
                 },
                 "tenure_type": "REGULAR",
                 "sequence": 1,
-                "total_cycles": 1,
+                "total_cycles": 0,
                 "pricing_scheme": {
                   "fixed_price": {
                     "value": "5",
