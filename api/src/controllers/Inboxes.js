@@ -1,4 +1,4 @@
-const { Inbox } = require("../db");
+const { Inbox, Like, Comment, Post, User } = require("../db");
 
 async function addNotification(is, idIs, idUser) {
   let newNotification
@@ -25,6 +25,20 @@ const userInbox = async (req, res, next) => {
       where: {
         userId: idUser,
       },
+      include: [
+        { model: Like, include: [
+          { model: User },
+          { model: Post },
+          { model: Comment, include: [
+            { model: Post }
+          ] }
+        ]},
+        { model: Comment, include: [
+          { model: User },
+          { model: Post }
+        ] },
+      ],
+      attributes: { exclude: ["userId"] }
     });
     res.json(notifications);
   } catch (error) {
