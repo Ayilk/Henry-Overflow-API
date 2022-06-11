@@ -246,6 +246,35 @@ const listPlans = async(req, res, next) => {
    
 }
  
+const suscriptionDetail = async(req, res, next) => {
+  const id = req.params.id;
+  try {
+    const params = new URLSearchParams()
+    params.append("grant_type", "client_credentials")
+ 
+    const {data: {access_token}} = await axios.post(`${PAYPAL_API}/v1/oauth2/token`, params, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        auth:{//Para enviar una autenticacion basica
+             username: CLIENT,
+              password: SECRET
+          }
+    })
+    console.log(access_token);
+     const response =await axios.get(`${PAYPAL_API}/v1/billing/subscriptions/${id}`,  {         
+         headers:{
+            'Content-Type': "application/json",
+            'Authorization': `Bearer ${access_token}`,
+         }
+     })
+     console.log(response.data)
+      res.send(response.data)
+    } catch (error) {
+        next(error)
+    }
+}
+
 
 module.exports = {
     createOrder, 
@@ -254,5 +283,6 @@ module.exports = {
     createProduct,
     createPlan,
     listProducts,
-    listPlans
+    listPlans,
+    suscriptionDetail
 }
