@@ -191,9 +191,11 @@ const bulkCreateUsers = async () => {
           last_name: lastName,
           email: data[i].email,
           image: data[i].picture,
-          isAdmin: true,
+          isAdmin: data[i].isAdmin,
+          isBanned: data[i].isBanned
         },
       });
+      // console.log(admins)
     }
   } catch (error) {
     console.log({ errorMsg: error.message });
