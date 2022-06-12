@@ -74,7 +74,7 @@ const logintUser = async (req, res, next) => {
 
 const updateUser = (req, res, next) => {
   const { idUser } = req.params;
-  const { first_name, last_name, about, role, twitter, github, portfolio } =
+  const { first_name, last_name, about, role, twitter, github, portfolio, linkedin } =
     req.body;
 
   return User.update(
@@ -86,6 +86,7 @@ const updateUser = (req, res, next) => {
       twitter,
       github,
       portfolio,
+      linkedin
     },
     {
       where: { id: idUser },
@@ -96,20 +97,20 @@ const updateUser = (req, res, next) => {
     .catch((error) => next(error));
 };
 
-const adminBanUser = async(req, res, next) => {
+const adminBanUser = async (req, res, next) => {
   const { idUser } = req.params
   try {
     const user = await User.findByPk(idUser);
-    if(user.isAdmin) return res.status(403).send("No es posible banear al usuario Admin")
+    if (user.isAdmin) return res.status(403).send("No es posible banear al usuario Admin")
     const options = user.isBanned ? false : true
 
     await User.update({
       isBanned: options
     },
-    {
-      where: { id: idUser },
-      raw: true
-    });
+      {
+        where: { id: idUser },
+        raw: true
+      });
 
     const response = options ? "Banned user" : "Unbanned user"
     console.log(user.isBanned)
