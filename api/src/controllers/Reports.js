@@ -35,7 +35,7 @@ const postReport = async (req, res, next) => {
             },
           }
     );
-    if (exist.length) return res.send("report already submitted");
+    if (exist.length) return res.status(409).send("report already submitted");
 
     const newReport = await Report.create({
       reason,

@@ -1,4 +1,4 @@
-const { User, Post, Comment, Like } = require("../db");
+const { User, Post, Comment, Like, Report } = require("../db");
 // const { isAdmin } = require('../middleware');
 
 const getUser = async (req, res, next) => {
@@ -20,6 +20,9 @@ const getUser = async (req, res, next) => {
           {
             model: Like,
             attributes: { exclude: ["userId"] },
+          },
+          {
+            model: Report,
           }
         ],
       });

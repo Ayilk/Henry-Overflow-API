@@ -63,6 +63,7 @@ const {
     Comment,
     Module,
     Like,
+    Order,    
     Favorite,
     Report,
     Inbox
@@ -121,6 +122,11 @@ Comment.belongsTo(User);
 
 Module.hasMany(Tag);
 Tag.belongsTo(Module);
+
+User.hasMany(Order);
+Order.belongsTo(User);
+
+
 
 
 

@@ -46,26 +46,28 @@ const updateLikeOf = async (req, res, next) => {
       likedBy.addLike(newLike);
 
       let notification = false;
-      if (likedBy.dataValues.id !== owner) {
+      // if (likedBy.dataValues.id !== owner) {
         const created = await addNotification(
           "like",
           newLike.dataValues.id,
           owner
         );
         notification = created;
-      }
+      // }
       return res.send(
         `Like ${response} successful and notification ${notification}`
       );
     } else {
       let notification = false;
-      const deleted = await Inbox.destroy({
-        where: {
-          id: exist[0].dataValues.inboxes[0].dataValues.id,
-        },
-      });
+      if(exist[0].dataValues.inboxes.length) {
+        const deleted = await Inbox.destroy({
+          where: {
+            id: exist[0].dataValues.inboxes[0].dataValues.id,
+          },
+        });
+        notification = Boolean(deleted);
+      }
       await exist[0].destroy();
-      notification = Boolean(deleted);
       return res.send(
         `Dislike ${response} successful and destroyed notification ${notification}`
       );

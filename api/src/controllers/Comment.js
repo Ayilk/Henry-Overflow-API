@@ -39,14 +39,14 @@ const addComment = async (req, res, next) => {
     };
     obj.notification = false;
 
-    if (createdInPost.dataValues.user.id !== createdBy.dataValues.id) {
+    // if (createdInPost.dataValues.user.id !== createdBy.dataValues.id) {
       addNotification(
         "comment",
         newComment.dataValues.id,
         createdInPost.dataValues.user.id
       );
       obj.notification = true;
-    }
+    // }
 
     res.send(obj);
   } catch (error) {
