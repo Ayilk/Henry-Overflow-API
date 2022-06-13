@@ -53,7 +53,7 @@ const getFavoritesUser = async (req, res, next) => {
   try {
     const favsByUser = await User.findByPk(idUser);
     if(!favsByUser) return res.status(404).send("User not found")
-    const allFavs = await favsByUser.getFavorites();
+    const allFavs = await favsByUser.getFavorites({ include: [Post, Comment] });
 
     res.json({ Favorites: allFavs });
   } catch (error) {
