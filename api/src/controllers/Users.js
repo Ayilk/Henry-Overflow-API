@@ -1,4 +1,4 @@
-const { User, Post, Comment, Like, Report } = require("../db");
+const { User, Post, Comment, Like, Report, Favorite } = require("../db");
 // const { isAdmin } = require('../middleware');
 
 const getUser = async (req, res, next) => {
@@ -23,7 +23,10 @@ const getUser = async (req, res, next) => {
           },
           {
             model: Report,
-          }
+          },
+          {
+            model: Favorite,
+          },
         ],
       });
       return userDetail
