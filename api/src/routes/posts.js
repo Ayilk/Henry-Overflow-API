@@ -7,7 +7,7 @@ router.get('/', getPost);
 router.get('/:idPost', getPost);
 router.post('/:idUser', isBanned, addPost);
 router.put('/:idPost/:idUser', updatePost);
-router.put('/:idPost/:idUser', finishedPost);
+// router.put('/:idPost/:idUser', finishedPost);
 router.delete('/:idPost/:idUser', deletePost);
 
 module.exports = router

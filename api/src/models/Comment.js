@@ -12,6 +12,10 @@ module.exports = (sequelize) => {
         message: {
             type: DataTypes.TEXT,
             allowNull: false
+        },
+        isCorrect: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false
         }
     },
     {
