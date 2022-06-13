@@ -4,8 +4,51 @@ const { User, Post, Comment, Like, Report, Favorite } = require("../db");
 const getUser = async (req, res, next) => {
   const { idUser } = req.params;
   const { fullname } = req.query;
+  const { dinamix } = req.query;
 
   try {
+    if(dinamix === "true") {
+      const userDinamix = await User.findByPk(idUser, {
+        include: [
+          {
+            model: Post,
+            attributes: ["id"],
+          },
+          {
+            model: Comment,
+            attributes: ["id"],
+          },
+          {
+            model: Like,
+            attributes: ["id"],
+            include: [
+              {
+                model: Post,
+                attributes: ["id"],
+              },
+              {
+                model: Comment,
+                attributes: ["id"],
+              }
+            ]
+          },
+          {
+            model: Report,
+            attributes: ["id"],
+          },
+          {
+            model: Favorite,
+            attributes: ["id"],
+          },
+        ],
+        attributes: ["id"],
+      });
+
+      console.log(userDinamix)
+      return userDinamix
+      ? res.status(200).send(userDinamix)
+      : res.status(404).send("user not found");
+    }
     if (idUser) {
       const userDetail = await User.findByPk(idUser, {
         include: [
@@ -20,6 +63,7 @@ const getUser = async (req, res, next) => {
           {
             model: Like,
             attributes: { exclude: ["userId"] },
+            include: [Post, Comment]
           },
           {
             model: Report,
@@ -31,7 +75,7 @@ const getUser = async (req, res, next) => {
       });
       return userDetail
         ? res.status(200).send(userDetail)
-        : res.status(400).send("user not found");
+        : res.status(404).send("user not found");
     }
     const response = await User.findAll();
 
