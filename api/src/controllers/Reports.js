@@ -14,11 +14,11 @@ const postReport = async (req, res, next) => {
       return res.status(404).send("Parametros invalidos")
     };
     
-    // const owner = reportInComment ? reportInComment.dataValues.user.id : reportInPost.dataValues.user.id;
+    const owner = reportInComment ? reportInComment.dataValues.user.id : reportInPost.dataValues.user.id;
 
-    // if(owner === reportBy.id) {
-    //   return res.status(400).send("No puedes reportar tu propio contenido")
-    // };
+    if(owner === reportBy.id) {
+      return res.status(400).send("No puedes reportar tu propio contenido")
+    };
 
     const exist = await Report.findAll(
       reportInComment
