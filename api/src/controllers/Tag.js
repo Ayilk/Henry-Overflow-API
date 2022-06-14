@@ -48,7 +48,7 @@ const adminDeleteTags = async (req, res, next) => {
 const plusOneTag = async (req, res, next) => {
   const { idTag } = req.params;
   const tagAModicar = await Tag.findByPk(idTag);
-  console.log(tagAModicar);
+
   try {
     if (!idTag) return res.send("Algo salio mal");
     await Tag.update(
