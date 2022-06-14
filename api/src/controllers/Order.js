@@ -110,7 +110,34 @@ const getOrder = async (req, res, next) => {
     .catch((error) => next(error));
 };
 
+const userIsSubscribed = async(req, res, next) => {
+  const { idUser } = req.params;
+  console.log(idUser)
+  try {
+    
+    // const next_billing_time = new Date(Order.next_billing_time).getDate();
+    // const last_payment = new Date(Order.last_payment).getDate();    
+    // const today = Date.now();
+    // const isSubscribed = false;
+    // next_billing_time < today ?  isSubscribed = true : isSubscribed = false; 
+
+    // await User.update({
+    //   isSubscribed: isSubscribed
+    // },
+    // {
+    //   where:{ id: idUser},
+    //   raw: true
+    // })
+    // console.log(isSubscribed)
+    res.send("Estado de suscripción actualizdo en la base de datos")
+  } catch (error) {
+    next(error)
+  }
+}
+  
+
 module.exports = {
   postOrder,
   getOrder,
+  userIsSubscribed
 };

@@ -129,8 +129,8 @@ const createPlan = async (req, res, next) => {
   try {
     const plan = {
       product_id: "PROD-1JR71498VV238292S",
-      name: "Plan trimestral",
-      description: "Basic plan",
+      name: "Plan Mensual",
+      description: "Con este plan, el usuario hará una donación mensual de 5 USD",
       billing_cycles: [
         //   {
         //     "frequency": {
@@ -144,7 +144,7 @@ const createPlan = async (req, res, next) => {
         {
           frequency: {
             interval_unit: "MONTH",
-            interval_count: 3,
+            interval_count: 1,
           },
           tenure_type: "REGULAR",
           sequence: 1,
