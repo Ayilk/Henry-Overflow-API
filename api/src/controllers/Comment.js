@@ -40,14 +40,14 @@ const addComment = async (req, res, next) => {
     };
     obj.notification = false;
 
-    // if (createdInPost.dataValues.user.id !== createdBy.dataValues.id) {
+    if (createdInPost.dataValues.user.id !== createdBy.dataValues.id) {
       addNotification(
         "comment",
         newComment.dataValues.id,
         createdInPost.dataValues.user.id
       );
       obj.notification = true;
-    // }
+    }
 
     res.send(obj);
   } catch (error) {
@@ -66,7 +66,6 @@ const updateComment = async (req, res, next) => {
   if (!comment || !user) return res.status(404).send("Datos no encontrados");
   
   if(is_correct === "true" && comment.dataValues.user.id === user.id || user.isAdmin) {
-    // const post = await Post.findByPk(comment.dataValues.post.id);
     const correctAnswer = await Comment.update(
       { isCorrect: is_correct },
       {
@@ -109,34 +108,6 @@ const updateComment = async (req, res, next) => {
 };
 
 const deleteComment = async (req, res, next) => {
-  const { idComment, idUser } = req.params;
-  try {
-    const comment = await Comment.findByPk(idComment, { include: [User] });
-    const user = await User.findByPk(idUser);
-
-    if (!comment || !user) return res.status(404).send("Datos no encontrados");
-
-    if (comment.dataValues.user.id === user.id || user.isAdmin) {
-      await Comment.destroy({
-        where: {
-          id: idComment,
-        },
-      });
-    } else
-      return res
-        .status(400)
-        .send(
-          "Accion denegada, solo el propietario puede eliminar el comentario"
-        );
-
-    res.send("Comment deleted successfully");
-  } catch (error) {
-    next(error);
-  }
-};
-
-
-const confirmCorrectAnswer = async (req, res, next) => {
   const { idComment, idUser } = req.params;
   try {
     const comment = await Comment.findByPk(idComment, { include: [User] });

@@ -46,14 +46,14 @@ const updateLikeOf = async (req, res, next) => {
       likedBy.addLike(newLike);
 
       let notification = false;
-      // if (likedBy.dataValues.id !== owner) {
+      if (likedBy.dataValues.id !== owner) {
         const created = await addNotification(
           "like",
           newLike.dataValues.id,
           owner
         );
         notification = created;
-      // }
+      }
       return res.send(
         `Like ${response} successful and notification ${notification}`
       );
