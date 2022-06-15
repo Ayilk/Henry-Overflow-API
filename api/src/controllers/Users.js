@@ -1,4 +1,4 @@
-const { User, Post, Comment, Like, Report, Favorite } = require("../db");
+const { User, Post, Comment, Like, Report, Favorite, Order } = require("../db");
 // const { isAdmin } = require('../middleware');
 
 const getUser = async (req, res, next) => {
@@ -40,6 +40,9 @@ const getUser = async (req, res, next) => {
             model: Favorite,
             attributes: ["id"],
           },
+          {
+            model: Order
+          }
         ],
         attributes: ["id"],
       });
@@ -170,9 +173,12 @@ const adminBanUser = async (req, res, next) => {
   }
 };
 
+
+
 module.exports = {
   getUser,
   logintUser,
   updateUser,
-  adminBanUser
+  adminBanUser,
+  
 };

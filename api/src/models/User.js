@@ -52,6 +52,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: false,
     },
+    isSubscribed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,   
+    },
     // role: {
     //   type: DataTypes.ENUM(
     //     "Student",
