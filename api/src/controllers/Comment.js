@@ -11,15 +11,16 @@ const addComment = async (req, res, next) => {
       include: [User, Comment],
     });
     const createdBy = await User.findByPk(idUser);
-    if (!createdInPost || !createdBy)
-      return res.status(404).send("Parametros invalidos");
+    if (!createdInPost || !createdBy) return res.status(404).send("Parametros invalidos");
+
+    if(createdInPost.dataValues.closed) return res.status(400).send("Pregunta cerrada!");
 
     let exist = createdInPost.dataValues.comments.find(
       (e) => e.dataValues.message === message
     );
     if (exist) {
       return res
-        .status(400)
+        .status(409)
         .send("Rechazado, ya existe este comentario en el posteo");
     }
 
@@ -39,14 +40,14 @@ const addComment = async (req, res, next) => {
     };
     obj.notification = false;
 
-    // if (createdInPost.dataValues.user.id !== createdBy.dataValues.id) {
+    if (createdInPost.dataValues.user.id !== createdBy.dataValues.id) {
       addNotification(
         "comment",
         newComment.dataValues.id,
         createdInPost.dataValues.user.id
       );
       obj.notification = true;
-    // }
+    }
 
     res.send(obj);
   } catch (error) {
@@ -57,18 +58,39 @@ const addComment = async (req, res, next) => {
 const updateComment = async (req, res, next) => {
   const { idComment, idUser } = req.params;
   const { message, rating } = req.body;
-  const comment = await Comment.findByPk(idComment, { include: [User] });
-  const ownUser = await User.findByPk(idUser);
+  const { is_correct } = req.query;
 
-  if (!comment || !ownUser) return res.status(404).send("Datos no encontrados");
+  const comment = await Comment.findByPk(idComment, { include: [User, Post] });
+  const user = await User.findByPk(idUser);
+  
+  if (!comment || !user) return res.status(404).send("Datos no encontrados");
+  
+  if(is_correct === "true" && comment.dataValues.user.id === user.id || user.isAdmin) {
+    const correctAnswer = await Comment.update(
+      { isCorrect: is_correct },
+      {
+        where: { id: idComment }
+      }
+    );
+    const closedPost = await Post.update(
+      { closed: true },
+      {
+        where: { id: comment.dataValues.post.id }
+      }
+    );
+    return res.json({
+      correctAnswer,
+      closedPost
+    })
+  }
 
-  if (comment.dataValues.user.id !== ownUser.id) {
+  if (comment.dataValues.user.id !== user.id) {
     return res
       .status(400)
       .send(
         "Accion denegada, solo el propietario puede actualizar el comentario"
       );
-  }
+  };
 
   return Comment.update(
     { message, rating },

@@ -153,6 +153,7 @@ const deletePost = async (req, res, next) => {
   const { idPost, idUser } = req.params;
   try {
     const post = await Post.findByPk(idPost, { include: [User] });
+    // console.log(post)
     const user = await User.findByPk(idUser);
 
     if (!post || !user) return res.status(404).send("Datos no encontrados");
@@ -175,42 +176,92 @@ const deletePost = async (req, res, next) => {
 };
 
 
-const finishedPost = async (req, res, next) => {
+// const finishedPost = async (req, res, next) => {
+//   const { idPost, idUser } = req.params;
+//   const { finished } = req.body;
+//   try {
+//     // console.log('holis')
+//     const post = await Post.findByPk(idPost, { include: [User] });
+//     const user = await User.findByPk(idUser);
+//     // console.log('hola', finished, post, user)
+//     if (!post)
+//       return res.status(404).send("Datos no encontrados");
+//     const postFinished = await Post.update(
+//       { finished },
+//       {
+//         where: { id: idPost },
+//         // raw: true,
+//       }
+//     );
+//     // console.log('Este es el post finalizado:', postFinished);
+//     return postFinished[0] === 1
+//       ? res.send("Post actualizado con exito!")
+//       : res.status(400).send("No se pudo actualizar el Post");
+//   } catch (error) {
+//     console.log(error)
+//   }
+// };
 
 
-  try {
+// const finishedPost = async (req, res, next) => {
+//   const { idPost, idUser } = req.params;
+//   const { title, message, tag, finished } = req.body;
+//   try {
+//     const postUpdate = await Post.findByPk(idPost, { include: [User, Module] });
+//     const ownUser = await User.findByPk(idUser);
+//     console.log(postUpdate)
 
-    const { idPost } = req.params;
-    const { finished } = req.body;
+//     if (!postUpdate || !ownUser)
+//       return res.status(404).send("Datos no encontrados");
 
-    const post = await Post.findByPk(idPost, { include: [User] });
-    console.log('hola', finished)
+//     if (ownUser.id !== postUpdate.dataValues.user.id) {
+//       return res
+//         .status(400)
+//         .send("Accion denegada, solo el propietario puede actualizar el post");
+//     }
 
-    if (!post)
-      return res.status(404).send("Datos no encontrados");
+//     if (tag) {
+//       const allTags = await Tag.findAll({
+//         where: {
+//           name: tag,
+//         },
+//         include: [Module],
+//       });
+//       let pass = allTags.find(
+//         (e) => e.dataValues.module.name !== postUpdate.dataValues.module.name
+//       );
+//       if (Boolean(pass))
+//         return res
+//           .status(400)
+//           .send(
+//             `Tags deben pertenecer a Modulo ${postUpdate.dataValues.module.name}`
+//           );
+//       await postUpdate.setTags(allTags);
+//     }
 
-    const postFinished = await Post.update(
-      { finished },
-      {
-        where: { id: idPost },
-        // raw: true,
-      }
-    );
-
-    console.log('Este es el post finalizado:', postFinished);
-
-    return postFinished[0] === 1
-      ? res.send("Post actualizado con exito!")
-      : res.status(400).send("No se pudo actualizar el Post");
-  } catch (error) {
-    console.log(error)
-  }
-};
+//     const updateSuccess = await Post.update(
+//       {
+//         title,
+//         message,
+//         finished
+//       },
+//       {
+//         where: { id: idPost },
+//         raw: true,
+//       }
+//     );
+//     return updateSuccess[0] === 1
+//       ? res.send("Post actualizado con exito!")
+//       : res.status(400).send("No se pudo actualizar el Post");
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 module.exports = {
   getPost,
   addPost,
   updatePost,
   deletePost,
-  finishedPost
+  // finishedPost
 };

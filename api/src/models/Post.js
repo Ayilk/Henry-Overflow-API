@@ -19,11 +19,9 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: "uniquePost"
     },
-    finished: {
+    closed: {
       type: DataTypes.BOOLEAN,
-      allowNull: false,
       defaultValue: false
-      // unique: "uniquePost"
     }
   },
     {

@@ -52,19 +52,27 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: false,
     },
-    role: {
-      type: DataTypes.ENUM(
-        "Student",
-        "Henry Hero",
-        "Technical Assitance",
-        "Henry Mentor",
-        "Instructor",
-        "Staff Henry",
-        "Graduate"
-      ),
+    isSubscribed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,   
+    },
+    // role: {
+    //   type: DataTypes.ENUM(
+    //     "Student",
+    //     "Henry Hero",
+    //     "Technical Assitance",
+    //     "Henry Mentor",
+    //     "Instructor",
+    //     "Staff Henry",
+    //     "Graduate"
+    //   ),
+    //   allowNull: true,
+    // },
+    twitter: {
+      type: DataTypes.TEXT,
       allowNull: true,
     },
-    twitter: {
+    role: {
       type: DataTypes.TEXT,
       allowNull: true,
     },
