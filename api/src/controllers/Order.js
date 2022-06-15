@@ -52,6 +52,14 @@ const postOrder = async (req, res, next) => {
       status_update_time,
       email_address,
     });
+    
+    await User.update({
+        isSubscribed: true
+      },
+      {
+        where:{ id: idUser},
+        raw: true
+      })
 
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
@@ -110,34 +118,34 @@ const getOrder = async (req, res, next) => {
     .catch((error) => next(error));
 };
 
-const userIsSubscribed = async(req, res, next) => {
-  const { idUser } = req.params;
-  console.log(idUser)
-  try {
-     Order.findAll({where: {userId: idUser}}).then(r => console.log(r))
+// const userIsSubscribed = async(req, res, next) => {
+//   const { idUser } = req.params;
+//   console.log(idUser)
+//   try {
+//      Order.findOne({where: {userId: idUser}}).then(r => console.log(r.dataValue) )
     
-    let next_billing_time = new Date().getDate();
-      console.log(Order.next_billing_time)
-    let today = Date.now();
+//     let next_billing_time = new Date().getDate();
+//       console.log(Order.next_billing_time)
+//     let today = Date.now();
      
-console.log(today < next_billing_time)
-    await User.update({
-      isSubscribed: today < next_billing_time
-    },
-    {
-      where:{ id: idUser},
-      raw: true
-    })
+// console.log(today < next_billing_time)
+//     await User.update({
+//       isSubscribed: today < next_billing_time
+//     },
+//     {
+//       where:{ id: idUser},
+//       raw: true
+//     })
     
-    res.send("Estado de suscripción actualizdo en la base de datos")
-  } catch (error) {
-    next(error)
-  }
-}
+//     res.send("Estado de suscripción actualizdo en la base de datos")
+//   } catch (error) {
+//     next(error)
+//   }
+// }
   
 
 module.exports = {
   postOrder,
   getOrder,
-  userIsSubscribed
+ // userIsSubscribed
 };
