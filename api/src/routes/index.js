@@ -29,4 +29,6 @@ router.use("/favorites", favorites);
 router.use("/reports", reports);
 router.use("/inboxes", inboxes);
 
+router.get("/", (req, res, next)=>{res.send("Ruta principal conectada exitosamente")});
+
 module.exports = router;
